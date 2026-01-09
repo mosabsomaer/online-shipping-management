@@ -95,6 +95,7 @@ class OrderResource extends Resource
                                         Forms\Components\Select::make('container_id')
                                             ->label('Container')
                                             ->relationship('container', 'name')
+                                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->localized_name ?? $record->name ?? 'Unknown Container')
                                             ->required()
                                             ->searchable()
                                             ->preload()

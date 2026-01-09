@@ -37,6 +37,7 @@ class ShipmentResource extends Resource
                             ->dehydrated(fn ($operation) => $operation === 'create'),
                         Forms\Components\Select::make('container_id')
                             ->relationship('container', 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->localized_name ?? $record->name ?? 'Unknown Container')
                             ->required()
                             ->searchable()
                             ->preload()

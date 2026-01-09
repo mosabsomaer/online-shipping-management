@@ -11,14 +11,46 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $merchant = auth()->user();
 
-        $orders = Order::where('merchant_id', $merchant->id)
-            ->with(['route', 'shipments.container'])
-            ->latest()
-            ->paginate(15);
+        $query = Order::where('merchant_id', $merchant->id)
+            ->with(['route', 'shipments.container']);
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Handle sorting
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $sortOrder = in_array($sortOrder, ['asc', 'desc']) ? $sortOrder : 'desc';
+
+        if (in_array($sortBy, ['created_at', 'status'])) {
+            $query->orderBy($sortBy, $sortOrder);
+        } else {
+            $query->latest();
+        }
+
+        $orders = $query->paginate(15);
+
+        // Sort by total_cost in PHP since it's a computed attribute
+        if ($request->get('sort_by') === 'total_cost') {
+            $orders->getCollection()->transform(function ($order) {
+                return $order;
+            });
+
+            $sorted = $orders->getCollection()->sortBy(function ($order) {
+                return $order->total_cost;
+            }, SORT_REGULAR, $sortOrder === 'desc');
+
+            $orders->setCollection($sorted);
+        }
+
+        // Preserve query parameters in pagination links
+        $orders->appends($request->query());
 
         return view('merchant.orders.index', compact('orders'));
     }
