@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,29 +24,41 @@
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <div class="flex-shrink-0 flex items-center">
-                                <a href="{{ route('merchant.dashboard') }}" class="text-xl font-bold text-blue-600">
-                                    Shipping Management
+                                <a href="{{ route('merchant.dashboard') }}" class="flex items-center gap-2">
+                                    <img src="{{ asset('logo_white_background.png') }}" alt="Logo" class="h-10 w-auto">
+                                    <span class="text-xl font-bold text-primary hidden sm:inline">{{ __('nav.brand') }}</span>
                                 </a>
                             </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <a href="{{ route('merchant.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('merchant.dashboard') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium">
-                                    Dashboard
+                            <div class="hidden gap-8 sm:-my-px sm:ms-10 sm:flex">
+                                <a href="{{ route('merchant.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('merchant.dashboard') ? 'border-secondary text-primary' : 'border-transparent text-gray-500 hover:text-primary hover:border-secondary' }} text-sm font-medium">
+                                    {{ __('nav.dashboard') }}
                                 </a>
-                                <a href="{{ route('merchant.orders.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('merchant.orders.index') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium">
-                                    My Orders
+                                <a href="{{ route('merchant.orders.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('merchant.orders.index') ? 'border-secondary text-primary' : 'border-transparent text-gray-500 hover:text-primary hover:border-secondary' }} text-sm font-medium">
+                                    {{ __('nav.my_orders') }}
                                 </a>
-                                <a href="{{ route('merchant.orders.create') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('merchant.orders.create') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium">
-                                    Create Order
+                                <a href="{{ route('merchant.orders.create') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('merchant.orders.create') ? 'border-secondary text-primary' : 'border-transparent text-gray-500 hover:text-primary hover:border-secondary' }} text-sm font-medium">
+                                    {{ __('nav.create_order') }}
                                 </a>
                             </div>
                         </div>
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <div class="ml-3 relative">
-                                <span class="text-sm text-gray-700 mr-4">{{ auth()->user()->name }}</span>
+                        <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+                            <!-- Locale Switcher -->
+                            <div class="flex items-center gap-1">
+                                <a href="{{ request()->fullUrlWithQuery(['locale' => 'en']) }}"
+                                   class="px-2 py-1 text-xs font-medium rounded {{ app()->getLocale() === 'en' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700' }}">
+                                    EN
+                                </a>
+                                <a href="{{ request()->fullUrlWithQuery(['locale' => 'ar']) }}"
+                                   class="px-2 py-1 text-xs font-medium rounded {{ app()->getLocale() === 'ar' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700' }}">
+                                    AR
+                                </a>
+                            </div>
+                            <div class="ms-3 relative">
+                                <span class="text-sm text-gray-700 me-4">{{ auth()->user()->name }}</span>
                                 <form method="POST" action="{{ route('logout') }}" class="inline">
                                     @csrf
                                     <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">
-                                        Logout
+                                        {{ __('nav.logout') }}
                                     </button>
                                 </form>
                             </div>

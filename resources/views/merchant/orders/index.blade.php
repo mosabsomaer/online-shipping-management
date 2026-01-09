@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Orders')
+@section('title', __('orders.title'))
 
 @section('content')
 <div class="py-12">
@@ -8,12 +8,12 @@
         <div class="overflow-hidden bg-white rounded-lg shadow-sm">
             <div class="p-6">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-900">My Orders</h2>
-                    <a href="{{ route('merchant.orders.create') }}" class="inline-flex items-center px-4 py-2 font-semibold text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h2 class="text-2xl font-bold text-gray-900">{{ __('orders.title') }}</h2>
+                    <a href="{{ route('merchant.orders.create') }}" class="inline-flex items-center px-4 py-2 font-semibold text-white bg-primary border border-transparent rounded-md hover:opacity-90">
+                        <svg class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
-                        Create New Order
+                        {{ __('dashboard.create_new_order') }}
                     </a>
                 </div>
 
@@ -28,11 +28,11 @@
                         <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">No orders yet</h3>
-                        <p class="mt-1 text-sm text-gray-500">Get started by creating your first order.</p>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('dashboard.no_orders') }}</h3>
+                        <p class="mt-1 text-sm text-gray-500">{{ __('dashboard.get_started') }}</p>
                         <div class="mt-6">
-                            <a href="{{ route('merchant.orders.create') }}" class="inline-flex items-center px-4 py-2 font-semibold text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700">
-                                Create Order
+                            <a href="{{ route('merchant.orders.create') }}" class="inline-flex items-center px-4 py-2 font-semibold text-white bg-primary border border-transparent rounded-md hover:opacity-90">
+                                {{ __('orders.create_order') }}
                             </a>
                         </div>
                     </div>
@@ -41,12 +41,12 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Route</th>
-                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Recipient</th>
-                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Status</th>
-                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Total Cost</th>
-                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Created</th>
-                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Actions</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-start text-gray-500 uppercase">{{ __('orders.route') }}</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-start text-gray-500 uppercase">{{ __('orders.recipient') }}</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-start text-gray-500 uppercase">{{ __('orders.status') }}</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-start text-gray-500 uppercase">{{ __('orders.total_cost') }}</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-start text-gray-500 uppercase">{{ __('orders.created') }}</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-start text-gray-500 uppercase">{{ __('orders.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -71,17 +71,17 @@
                                                 @elseif($order->status === 'completed') bg-emerald-100 text-emerald-800
                                                 @elseif($order->status === 'cancelled') bg-slate-100 text-slate-800
                                                 @endif">
-                                                {{ ucfirst(str_replace('_', ' ', $order->status)) }}
+                                                {{ __('status.' . $order->status) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                            LYD {{ number_format($order->total_cost, 2) }}
+                                            {{ __('common.currency') }} {{ number_format($order->total_cost, 2) }}
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                             {{ $order->created_at->format('M d, Y') }}
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                                            <a href="{{ route('merchant.orders.show', $order) }}" class="text-blue-600 hover:text-blue-900">View Details</a>
+                                            <a href="{{ route('merchant.orders.show', $order) }}" class="text-secondary hover:text-primary">{{ __('orders.view_details') }}</a>
                                         </td>
                                     </tr>
                                 @endforeach
