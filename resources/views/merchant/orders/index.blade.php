@@ -53,8 +53,8 @@
                                 @foreach($orders as $order)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">{{ $order->route->originPort->name }}</div>
-                                            <div class="text-xs text-gray-500">→ {{ $order->route->destinationPort->name }}</div>
+                                            <div class="text-sm text-gray-900">{{ $order->route->originPort->localized_name }}</div>
+                                            <div class="text-xs text-gray-500">→ {{ $order->route->destinationPort->localized_name }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-900">{{ $order->recipient_name }}</div>

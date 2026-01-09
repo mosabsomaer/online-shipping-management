@@ -66,7 +66,7 @@
                                     class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-secondary focus:ring-secondary">
                                     <option value="">{{ __('orders.select_origin') }}</option>
                                     @foreach($routes->unique('origin_port_id') as $route)
-                                        <option value="{{ $route->originPort->name }}">{{ $route->originPort->name }}</option>
+                                        <option value="{{ $route->originPort->localized_name }}">{{ $route->originPort->localized_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -93,7 +93,7 @@
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-medium text-gray-900">{{ __('orders.shipments') }}</h3>
                             <button type="button" @click="addShipment()"
-                                class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                                class="px-4 py-2 text-sm font-medium text-white rounded-md bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                                 {{ __('orders.add_shipment') }}
                             </button>
                         </div>
@@ -119,7 +119,7 @@
                                         <option value="">{{ __('orders.select_container') }}</option>
                                         @foreach($containers as $container)
                                             <option value="{{ $container->id }}" data-price="{{ $container->price }}">
-                                                {{ $container->name }} ({{ $container->size }}m³, {{ number_format($container->weight_limit, 0) }}kg, {{ __('common.currency') }} {{ number_format($container->price, 2) }})
+                                                {{ $container->localized_name }} ({{ $container->size }}m³, {{ number_format($container->weight_limit, 0) }}kg, {{ __('common.currency') }} {{ number_format($container->price, 2) }})
                                             </option>
                                         @endforeach
                                     </select>
@@ -148,7 +148,7 @@
                     </div>
 
                     <!-- Total Price Summary -->
-                    <div class="p-4 mb-6 border border-secondary/30 rounded-md bg-secondary/10">
+                    <div class="p-4 mb-6 border rounded-md border-secondary/30 bg-secondary/10">
                         <h3 class="mb-2 text-sm font-medium text-gray-900">{{ __('orders.order_summary') }}</h3>
                         <div class="space-y-1 text-sm text-gray-700">
                             <div class="flex justify-between">
@@ -168,7 +168,7 @@
                         <a href="{{ route('merchant.dashboard') }}" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
                             {{ __('common.cancel') }}
                         </a>
-                        <button type="submit" class="px-4 py-2 font-semibold text-white bg-primary border border-transparent rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        <button type="submit" class="px-4 py-2 font-semibold text-white border border-transparent rounded-md bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                             {{ __('orders.create_order') }}
                         </button>
                     </div>
@@ -214,12 +214,12 @@
             getDestinationsForOrigin(origin) {
                 if (!origin) return [];
                 const filtered = this.routes.filter(route => {
-                    const routeOriginName = route.originPort?.name;
+                    const routeOriginName = route.origin_port?.localized_name;
                     const matches = routeOriginName === origin;
                     return matches;
                 });
                 const destinations = filtered
-                    .map(route => route.destinationPort?.name)
+                    .map(route => route.destination_port?.localized_name)
                     .filter(Boolean)
                     .filter((value, index, self) => self.indexOf(value) === index);
                 return destinations;
@@ -233,9 +233,9 @@
             updateRouteId() {
                 if (this.origin && this.destination) {
                     const route = this.routes.find(r =>
-                        r.originPort && r.destinationPort &&
-                        r.originPort.name === this.origin &&
-                        r.destinationPort.name === this.destination
+                        r.origin_port && r.destination_port &&
+                        r.origin_port.localized_name === this.origin &&
+                        r.destination_port.localized_name === this.destination
                     );
                     if (route) {
                         this.route_id = route.id;

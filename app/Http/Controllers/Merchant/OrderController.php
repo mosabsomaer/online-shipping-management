@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Container;
 use App\Models\Order;
 use App\Models\Route;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -80,5 +81,19 @@ class OrderController extends Controller
         $order->load(['route', 'shipments.container', 'shipments.statusHistory', 'payment']);
 
         return view('merchant.orders.show', compact('order'));
+    }
+
+    public function downloadReceipt(Order $order)
+    {
+        // Ensure merchant can only download their own order receipts
+        if ($order->merchant_id !== auth()->id()) {
+            abort(403, 'Unauthorized access to this order.');
+        }
+
+        $order->load(['route.originPort', 'route.destinationPort', 'shipments.container', 'payment']);
+
+        $pdf = Pdf::loadView('merchant.orders.receipt-pdf', compact('order'));
+
+        return $pdf->download("order-{$order->tracking_number}-receipt.pdf");
     }
 }

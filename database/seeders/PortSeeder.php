@@ -15,6 +15,7 @@ class PortSeeder extends Seeder
         $ports = [
             [
                 'name' => 'Tripoli Port',
+                'name_ar' => 'ميناء طرابلس',
                 'code' => 'LYTIP',
                 'latitude' => 32.8925,
                 'longitude' => 13.1864,
@@ -23,6 +24,7 @@ class PortSeeder extends Seeder
             ],
             [
                 'name' => 'Benghazi Port',
+                'name_ar' => 'ميناء بنغازي',
                 'code' => 'LYBEN',
                 'latitude' => 32.1163,
                 'longitude' => 20.0686,
@@ -31,6 +33,7 @@ class PortSeeder extends Seeder
             ],
             [
                 'name' => 'Misurata Port',
+                'name_ar' => 'ميناء مصراتة',
                 'code' => 'LYMIS',
                 'latitude' => 32.3754,
                 'longitude' => 15.0919,
@@ -39,6 +42,7 @@ class PortSeeder extends Seeder
             ],
             [
                 'name' => 'Istanbul Port',
+                'name_ar' => 'ميناء إسطنبول',
                 'code' => 'TRIST',
                 'latitude' => 41.0082,
                 'longitude' => 28.9784,
@@ -47,6 +51,7 @@ class PortSeeder extends Seeder
             ],
             [
                 'name' => 'Alexandria Port',
+                'name_ar' => 'ميناء الإسكندرية',
                 'code' => 'EGALY',
                 'latitude' => 31.2001,
                 'longitude' => 29.9187,
@@ -55,6 +60,7 @@ class PortSeeder extends Seeder
             ],
             [
                 'name' => 'Tunis Port',
+                'name_ar' => 'ميناء تونس',
                 'code' => 'TNTUN',
                 'latitude' => 36.8065,
                 'longitude' => 10.1815,
@@ -63,6 +69,7 @@ class PortSeeder extends Seeder
             ],
             [
                 'name' => 'Valletta Port',
+                'name_ar' => 'ميناء فاليتا',
                 'code' => 'MTMLA',
                 'latitude' => 35.8989,
                 'longitude' => 14.5146,
@@ -71,6 +78,7 @@ class PortSeeder extends Seeder
             ],
             [
                 'name' => 'Dubai Port',
+                'name_ar' => 'ميناء دبي',
                 'code' => 'AEDXB',
                 'latitude' => 25.2048,
                 'longitude' => 55.2708,
@@ -80,7 +88,7 @@ class PortSeeder extends Seeder
         ];
 
         foreach ($ports as $port) {
-            Port::firstOrCreate(
+            Port::updateOrCreate(
                 ['code' => $port['code']],
                 $port
             );

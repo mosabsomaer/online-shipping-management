@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Merchant\DashboardController;
 use App\Http\Controllers\Merchant\OrderController;
-use App\Http\Controllers\Merchant\TrackingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -15,8 +14,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->prefix('merchant')->name('merchant.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->except(['edit', 'update', 'destroy']);
-    Route::get('/tracking', [TrackingController::class, 'search'])->name('tracking.search');
-    Route::post('/tracking/lookup', [TrackingController::class, 'lookup'])->name('tracking.lookup');
+    Route::get('orders/{order}/receipt', [OrderController::class, 'downloadReceipt'])->name('orders.receipt');
 });
 
 // Payment routes

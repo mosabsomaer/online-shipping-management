@@ -48,8 +48,8 @@
 
     "orders.route_section": "المسار",
     "orders.route_info": "معلومات المسار",
-    "orders.origin": "المصدر",
-    "orders.destination": "الوجهة",
+    "orders.origin": "ميناء المصدر",
+    "orders.destination": "ميناء الوجهة",
     "orders.select_origin": "اختر المصدر",
     "orders.select_destination": "اختر الوجهة",
     "orders.schedule": "الجدول",

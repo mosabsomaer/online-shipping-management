@@ -34,81 +34,12 @@ class OrderResource extends Resource
                             ->dehydrated(false)
                             ->visible(fn ($operation) => $operation === 'edit'),
                         Forms\Components\Select::make('merchant_id')
-                            ->relationship('merchant', 'name', fn ($query) => $query->where('role', 'merchant'))
+                            ->relationship('merchant', 'name')
                             ->required()
                             ->searchable()
                             ->preload()
                             ->disabled(fn ($operation) => $operation === 'edit')
                             ->dehydrated(fn ($operation) => $operation === 'create'),
-                        // Forms\Components\Select::make('origin')
-                        //     ->label('Origin')
-                        //     ->options(function () {
-                        //         return \App\Models\Route::where('is_active', true)
-                        //             ->with('originPort')
-                        //             ->get()
-                        //             ->unique('origin_port_id')
-                        //             ->pluck('originPort.name', 'originPort.name');
-                        //     })
-                        //     ->required()
-                        //     ->searchable()
-                        //     ->preload()
-                        //     ->live()
-                        //     ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
-                        //         $set('destination', null);
-                        //         $set('route_id', null);
-
-                        //         if ($state && $get('destination')) {
-                        //             $route = \App\Models\Route::where('is_active', true)
-                        //                 ->whereHas('originPort', fn ($query) => $query->where('name', $state))
-                        //                 ->whereHas('destinationPort', fn ($query) => $query->where('name', $get('destination')))
-                        //                 ->first();
-
-                        //             if ($route) {
-                        //                 $set('route_id', $route->id);
-                        //             }
-                        //         }
-                        //     })
-                        //     ->disabled(fn ($operation) => $operation === 'edit')
-                        //     ->dehydrated(false),
-                        // Forms\Components\Select::make('destination')
-                        //     ->label('Destination')
-                        //     ->options(function (Forms\Get $get) {
-                        //         $origin = $get('origin');
-                        //         if (! $origin) {
-                        //             return \App\Models\Route::where('is_active', true)
-                        //                 ->with('destinationPort')
-                        //                 ->get()
-                        //                 ->unique('destination_port_id')
-                        //                 ->pluck('destinationPort.name', 'destinationPort.name');
-                        //         }
-
-                        //         return \App\Models\Route::where('is_active', true)
-                        //             ->whereHas('originPort', fn ($query) => $query->where('name', $origin))
-                        //             ->with('destinationPort')
-                        //             ->get()
-                        //             ->unique('destination_port_id')
-                        //             ->pluck('destinationPort.name', 'destinationPort.name');
-                        //     })
-                        //     ->required()
-                        //     ->searchable()
-                        //     ->preload()
-                        //     ->live()
-                        //     ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
-                        //         $set('route_id', null);
-
-                        //         if ($state && $get('origin')) {
-                        //             $route = \App\Models\Route::where('is_active', true)
-                        //                 ->whereHas('originPort', fn ($query) => $query->where('name', $get('origin')))
-                        //                 ->whereHas('destinationPort', fn ($query) => $query->where('name', $state))
-                        //                 ->first();
-
-                        //             if ($route) {
-                        //                 $set('route_id', $route->id);
-                        //             }
-                        //         }
-                        //     })
-                        //     ->disabled(fn ($operation) => $operation === 'edit')
-                        //     ->dehydrated(false),
                         Forms\Components\Hidden::make('route_id')
                             ->required(),
                         Forms\Components\Select::make('status')
@@ -163,7 +94,7 @@ class OrderResource extends Resource
                                     ->schema([
                                         Forms\Components\Select::make('container_id')
                                             ->label('Container')
-                                            ->relationship('container', 'name', fn ($query) => $query->where('is_available', true))
+                                            ->relationship('container', 'name')
                                             ->required()
                                             ->searchable()
                                             ->preload()
@@ -209,7 +140,7 @@ class OrderResource extends Resource
                                                 // Recalculate order total when customs fee changes
                                                 static::updateOrderTotal($livewire);
                                             })
-                                            ->disabled(fn ($operation) => $operation === 'edit'),
+                                            ->disabled(fn (Forms\Get $get, $operation) => $operation === 'edit' && $get('../../status') !== 'pending_approval'),
                                     ])->columns(2),
                             ])
                             ->defaultItems(1)
@@ -230,7 +161,8 @@ class OrderResource extends Resource
                             ->deleteAction(
                                 fn ($action, $livewire) => $action->after(fn () => static::updateOrderTotal($livewire))
                             )
-                            ->disabled(fn ($operation) => $operation === 'edit')
+                            ->addable(fn ($operation) => $operation === 'create')
+                            ->deletable(fn ($operation) => $operation === 'create')
                             ->columnSpanFull(),
                     ])->columnSpanFull(),
 

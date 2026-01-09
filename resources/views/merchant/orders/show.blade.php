@@ -29,6 +29,17 @@
             </div>
         @endif
 
+        <!-- Download Receipt Button -->
+        <div class="flex justify-end mb-6">
+            <a href="{{ route('merchant.orders.receipt', $order) }}"
+               class="inline-flex items-center px-4 py-2 font-semibold text-white border border-transparent rounded-md bg-primary hover:opacity-90">
+                <svg class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                {{ __('orders.download_receipt') }}
+            </a>
+        </div>
+
         <!-- Order Header -->
         <div class="mb-6 overflow-hidden bg-gray-50 rounded-lg shadow-sm">
             <div class="p-6">
@@ -103,10 +114,15 @@
                 <div class="p-6">
                     <h3 class="mb-4 text-lg font-semibold text-gray-900">{{ __('orders.route_info') }}</h3>
 
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
                         <div>
-                            <p class="text-sm font-medium text-gray-500">{{ __('orders.route') }}</p>
-                            <p class="text-sm text-gray-900">{{ $order->route->originPort->name }} → {{ $order->route->destinationPort->name }}</p>
+                            <p class="text-sm font-medium text-gray-500">{{ __('orders.origin') }}</p>
+                            <p class="text-sm text-gray-900">{{ $order->route->originPort->localized_name }}</p>
+                        </div>
+
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">{{ __('orders.destination') }}</p>
+                            <p class="text-sm text-gray-900">{{ $order->route->destinationPort->localized_name }}</p>
                         </div>
 
                         <div>
@@ -141,7 +157,7 @@
                             @if($shipment->container)
                                 <div>
                                     <p class="text-sm font-medium text-gray-500">{{ __('orders.container_type') }}</p>
-                                    <p class="text-sm text-gray-900">{{ $shipment->container->name }}</p>
+                                    <p class="text-sm text-gray-900">{{ $shipment->container->localized_name }}</p>
                                     <p class="text-xs text-gray-500">{{ $shipment->container->size }} m³ • Max {{ number_format($shipment->container->weight_limit, 0) }} kg</p>
                                 </div>
                             @endif

@@ -28,7 +28,7 @@ class ShipmentResource extends Resource
                 Forms\Components\Section::make('Shipment Information')
                     ->schema([
                         Forms\Components\Select::make('order_id')
-                            ->relationship('order', 'tracking_number', fn ($query) => $query->whereIn('status', ['paid', 'processing']))
+                            ->relationship('order', 'tracking_number')
                             ->required()
                             ->searchable()
                             ->preload()
@@ -36,7 +36,7 @@ class ShipmentResource extends Resource
                             ->disabled(fn ($operation) => $operation === 'edit')
                             ->dehydrated(fn ($operation) => $operation === 'create'),
                         Forms\Components\Select::make('container_id')
-                            ->relationship('container', 'name', fn ($query) => $query->where('is_available', true))
+                            ->relationship('container', 'name')
                             ->required()
                             ->searchable()
                             ->preload()

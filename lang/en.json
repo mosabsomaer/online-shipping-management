@@ -48,8 +48,8 @@
 
     "orders.route_section": "Route",
     "orders.route_info": "Route Information",
-    "orders.origin": "Origin",
-    "orders.destination": "Destination",
+    "orders.origin": "Origin Port",
+    "orders.destination": "Destination Port",
     "orders.select_origin": "Select origin",
     "orders.select_destination": "Select destination",
     "orders.schedule": "Schedule",

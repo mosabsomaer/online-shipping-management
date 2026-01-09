@@ -27,10 +27,14 @@ class ContainerResource extends Resource
                 Forms\Components\Section::make('Container Details')
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label('Name (English)')
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('e.g., 20ft Standard, 40ft High Cube')
-                            ->columnSpan(2),
+                            ->placeholder('e.g., 20ft Standard, 40ft High Cube'),
+                        Forms\Components\TextInput::make('name_ar')
+                            ->label('Name (Arabic)')
+                            ->maxLength(255)
+                            ->placeholder('e.g., حاوية قياسية 20 قدم'),
                         Forms\Components\TextInput::make('size')
                             ->suffix('m³')
                             ->minValue(0)->disabled()
@@ -55,12 +59,17 @@ class ContainerResource extends Resource
                             ->helperText('Only available containers can be selected for orders'),
                     ])->columns(3),
 
-                Forms\Components\Section::make('Additional Information')
+                Forms\Components\Section::make('Description')
                     ->schema([
                         Forms\Components\Textarea::make('description')
+                            ->label('Description (English)')
                             ->rows(3)
                             ->placeholder('Enter additional details about this container type...'),
-                    ]),
+                        Forms\Components\Textarea::make('description_ar')
+                            ->label('Description (Arabic)')
+                            ->rows(3)
+                            ->placeholder('أدخل تفاصيل إضافية عن هذا النوع من الحاويات...'),
+                    ])->columns(2),
             ]);
     }
 
@@ -69,9 +78,15 @@ class ContainerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Name (EN)')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
+                Tables\Columns\TextColumn::make('name_ar')
+                    ->label('Name (AR)')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('size')
                     ->suffix(' m³')
                     ->numeric()
@@ -85,6 +100,7 @@ class ContainerResource extends Resource
                     ->sortable()
                     ->label('Weight Limit'),
                 Tables\Columns\TextColumn::make('description')
+                    ->label('Description')
                     ->limit(50)
                     ->toggleable(),
                 Tables\Columns\IconColumn::make('is_available')
