@@ -15,7 +15,7 @@ class ShipmentResource extends Resource
 {
     protected static ?string $model = Shipment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-truck';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
     protected static ?string $navigationGroup = 'Order Management';
 
